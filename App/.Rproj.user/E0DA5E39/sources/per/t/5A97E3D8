@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1661600597184.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "838761108",
+    "id" : "5A97E3D8",
+    "lastKnownWriteTime" : 1661600748,
+    "last_content_update" : 1661600748339,
+    "path" : "~/Desktop/RAND_Desktop/NonRAND/ExternalRepo/ReportSearch/App/R/plot_network.R",
+    "project_path" : "R/plot_network.R",
+    "properties" : {
+        "cursorPosition" : "4,14",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
