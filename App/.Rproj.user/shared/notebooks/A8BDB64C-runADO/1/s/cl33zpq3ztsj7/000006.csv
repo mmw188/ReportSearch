@@ -1,0 +1,3 @@
+"0",""
+"0","## Convert to log scale to prevent underflow errors"
+"0","post <- log(combos)"

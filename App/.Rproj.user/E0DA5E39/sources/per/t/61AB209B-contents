@@ -1,0 +1,84 @@
+---
+title: "Adaptive Design Optimization (ADO) for running assessment center"
+author: '[Matt Walsh]'
+dte: February 2018
+output:
+  html_document:
+    toc: yes
+  html_notebook:
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+# Setup
+
+Load libraries, source scripts, set directories
+
+```{r setup, message=FALSE, warning=FALSE}
+rm(list=ls())
+
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(matrixStats)
+library(parallel)
+library(viridis)
+
+source('ado_funs.R')
+
+output.dir <- 'outputs'
+input.dir  <- 'inputs'
+m.eps      <- .Machine$double.eps
+
+sim.inputs <- readRDS(file.path(input.dir, 'SimulationInputs.RDS'))
+```
+
+```{r thresholds, message=FALSE, warning=FALSE, fig.width = 3, fig.height = 3}
+## Load previously estimated thresholds of multinomial logistic regression
+thresholds <- sim.inputs$thresholds
+thresh     <- as.numeric(thresholds$Value)
+
+## Using multinomial logistic regression model, compute probability of ratings 0 to 5 given latent values ranging from -4.5 to 4.5
+n.seq <- seq(from = -4.5, to = 4.5, by = .05)
+bns <- unlist(lapply(n.seq,
+                     function(x) min(which(x <= c(thresh, Inf)))))
+
+combos <- multi(n.seq, thresholds)
+combos[combos == 0] <- m.eps
+
+## Plot the multinomial model
+plot.multinomial(combos)
+
+## Convert to log scale to prevent underflow errors
+post <- log(combos)
+```
+
+```{r priors, message=FALSE, warning=FALSE, fig.width = 3, fig.height = 3}
+df.sub <- sim.inputs$df.sub
+
+## Generate priors for each attribute
+att.list <- unique(df.sub$Attribute)
+wt <- .25 ## Note, we convolve informed prior with uniform prior. WT controls weight given to informed prior
+
+p.vec <- data.frame(Attribute = att.list, p = NaN, stringsAsFactors = FALSE)
+
+for (i in att.list){
+  p.vec$p[p.vec$Attribute == i]     <- gen.prior(post, filter(df.sub, Attribute == i), wt)
+  p.vec$p.bin[p.vec$Attribute == i] <- bin.probs(p.vec$p[p.vec$Attribute == i], bns)
+}
+
+## Plot priors
+plot.priors(p.vec, n.seq)
+
+```
+
+
+```{r run_simulation, message=FALSE, warning=FALSE, fig.width = 3, fig.height = 3}
+p.est <- sim.inputs$p.est
+p.est <- left_join(p.est %>% select(-p), p.vec, by = 'Attribute')
+
+sim.seq  <- rep(c('ADO', 'Random', 'Grid'), each = 10)
+outcomes <- mclapply(sim.seq, function(x) run_ado(p.est, combos, post, bns, x))
+plot.final(outcomes)
+```

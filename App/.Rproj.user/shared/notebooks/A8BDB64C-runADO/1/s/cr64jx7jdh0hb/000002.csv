@@ -1,0 +1,6 @@
+"0","p.est <- sim.inputs$p.est"
+"0","p.est <- left_join(p.est %>% select(-p), p.vec, by = 'Attribute')"
+"0",""
+"0","sim.seq  <- rep(c('ADO', 'Random', 'Grid'), each = 1)"
+"0","outcomes <- mclapply(sim.seq, function(x) run_ado(p.est, combos, post, bns, x))"
+"0","plot.final(outcomes)"
