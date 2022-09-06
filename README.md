@@ -17,24 +17,7 @@ The app subdirectory contains an R Project file, App.Rproj, along with the main 
 # 4.0 Running the Application
 To run the application, select the R Project file, App.Rproj. If the file global.R does not automatically open, select it from the Files panel in the lower-right screen in RStudio. Once the file global.R is displayed, press the Run App button beside the green arrow.
 
-This work was developed in R version 3.6.3 and uses several packages installed from CRAN:
-library(dplyr)
-library(tidyr)
-library(lsa)
-library(textmineR)
-library(RColorBrewer)
-library(visNetwork)
-library(igraph)
-library(DT)
-library(shinydashboard)
-library(shiny)
-library(shinyjs)
-library(shinyWidgets)
-library(shinyhelper)
-library(data.table)
-library(ggplot2)
-library(textreadr)
-library(xlsx)
+This work was developed in R version 3.6.3 and uses several packages installed from CRAN: library(dplyr); library(tidyr); library(lsa); library(textmineR); library(RColorBrewer); library(visNetwork); library(igraph); library(DT); library(shinydashboard); library(shiny); library(shinyjs); library(shinyWidgets); library(shinyhelper); library(data.table); library(ggplot2); library(textreadr); library(xlsx)
 
 # 5.0 Citations
 Landauer, T. K., Foltz, P. W., & Laham, D. (1998). An introduction to latent semantic analysis. Discourse processes, 25(2-3), 259-284.
